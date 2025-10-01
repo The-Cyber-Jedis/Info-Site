@@ -1,0 +1,83 @@
+/* Universal Styles */
+* {
+    box-sizing: border-box; /* Makes padding and border included in the element's total width and height */
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    color: white; /* Default text color */
+    line-height: 1.6;
+
+    /* === LARGE WALLPAPER BACKGROUND === */
+    background-image: url('MATS/ISD.webp');
+    background-size: cover; /* Ensures the image covers the whole body */
+    background-attachment: fixed; /* Keeps the image in place when scrolling */
+    background-position: center center; /* Centers the image */
+}
+
+/* Container for all content to sit nicely over the background */
+main {
+    max-width: 1000px;
+    margin: 0 auto; /* Centers the main content block */
+    padding: 20px;
+    background-color: rgba(0, 0, 0, 0.75); /* Semi-transparent overlay for readability */
+    min-height: 100vh; /* Ensures the background color extends to full viewport height */
+}
+
+/* Navigation Bar */
+header {
+    background-color: rgba(0, 0, 0, 0.9);
+    padding: 10px 0;
+}
+
+nav {
+    max-width: 1000px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+nav a {
+    color: white;
+    text-decoration: none;
+    padding: 10px 15px;
+    display: inline-block;
+}
+
+/* === MOBILE RESPONSIVENESS for Images === */
+img {
+    max-width: 100%; /* Ensures images never overflow their container */
+    height: auto; /* Maintains aspect ratio */
+    display: block;
+    margin: 10px 0;
+}
+
+/* === Responsive Video Embedding (EPISODE Page) === */
+.video-container {
+    position: relative;
+    padding-bottom: 56.25%; /* 16:9 Aspect Ratio (9/16 = 0.5625) */
+    height: 0;
+    overflow: hidden;
+    margin-bottom: 20px;
+}
+
+.video-container iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+/* === Mobile-First Media Query for smaller screens === */
+@media (max-width: 600px) {
+    nav a {
+        display: block; /* Stack links vertically on small screens */
+        border-bottom: 1px solid #333;
+    }
+
+    main {
+        padding: 10px;
+    }
+}

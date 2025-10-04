@@ -5,50 +5,180 @@
     padding: 0;
 }
 
-body {
-    font-family: Arial, sans-serif;
-    color: white; /* Default text color */
-    line-height: 1.6;
-
-    /* === LARGE WALLPAPER BACKGROUND === */
-    background-image: url('MATS/ISD.webp');
-    background-size: cover; /* Ensures the image covers the whole body */
-    background-attachment: fixed; /* Keeps the image in place when scrolling */
-    background-position: center center; /* Centers the image */
+:root {
+    /* Define a color palette for easier changes */
+    --color-primary: #00bcd4; /* Cyan/Jedi Blue for highlights */
+    --color-secondary: #ff9800; /* Orange/Gold for accents */
+    --color-background: #0a0a0a; /* Deep, dark background */
+    --color-text-light: #e0e0e0; /* Light text for contrast */
+    --color-text-dim: #9e9e9e; /* Dim text for secondary info */
+    --color-card-bg: rgba(25, 25, 25, 0.9); /* Dark, slightly transparent card background */
 }
 
-/* Container for all content to sit nicely over the background */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Modern, clear font */
+    color: var(--color-text-light);
+    line-height: 1.7;
+    background-color: var(--color-background);
+
+    /* === LARGE WALLPAPER BACKGROUND for index.html (Star Destroyer) === */
+    background-image: url('MATS/ISD.webp');
+    background-size: cover;
+    background-attachment: fixed;
+    background-position: center center;
+}
+
+/* Base Link Styling */
+a {
+    color: var(--color-primary);
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+a:hover {
+    color: var(--color-secondary);
+}
+
+/* Main Content Wrapper */
 main {
-    max-width: 1000px;
-    margin: 0 auto; /* Centers the main content block */
-    padding: 20px;
-    background-color: rgba(0, 0, 0, 0.75); /* Semi-transparent overlay for readability */
-    min-height: 100vh; /* Ensures the background color extends to full viewport height */
+    max-width: 1200px; /* Wider main container */
+    margin: 0 auto;
+    padding: 30px 20px;
+    background-color: rgba(0, 0, 0, 0.85); /* Darker, less transparent overlay */
+    min-height: 100vh;
+    box-shadow: 0 0 50px rgba(0, 188, 212, 0.1); /* Subtle 'glow' */
+}
+
+/* Headings */
+h1, h2, h3 {
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: 20px;
+    color: var(--color-primary);
+}
+
+h1 {
+    font-size: 2.5em;
+    text-align: center;
+    padding: 20px 0;
+    border-bottom: 2px solid var(--color-primary);
+    margin-top: 0;
+}
+
+h2 {
+    font-size: 1.8em;
+    border-left: 5px solid var(--color-secondary);
+    padding-left: 10px;
+    margin-top: 30px;
 }
 
 /* Navigation Bar */
 header {
-    background-color: rgba(0, 0, 0, 0.9);
-    padding: 10px 0;
+    background-color: rgba(10, 10, 10, 0.95);
+    border-bottom: 2px solid var(--color-primary);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+    position: sticky; /* Keep nav at the top */
+    top: 0;
+    z-index: 1000;
 }
 
 nav {
-    max-width: 1000px;
+    max-width: 1200px;
     margin: 0 auto;
     text-align: center;
+    display: flex;
+    justify-content: center;
 }
 
 nav a {
-    color: white;
-    text-decoration: none;
-    padding: 10px 15px;
-    display: inline-block;
+    color: var(--color-text-light);
+    font-weight: bold;
+    text-transform: uppercase;
+    padding: 15px 20px;
+    border-bottom: 3px solid transparent;
+    transition: all 0.3s ease;
 }
 
-/* === MOBILE RESPONSIVENESS for Images === */
+nav a:hover, nav a:focus {
+    color: var(--color-primary);
+    background-color: rgba(0, 188, 212, 0.1);
+    border-bottom: 3px solid var(--color-primary);
+}
+
+/* Footer */
+footer {
+    background-color: rgba(0, 0, 0, 0.95);
+    color: var(--color-text-dim);
+    text-align: center;
+    padding: 15px;
+    font-size: 0.9em;
+    border-top: 1px solid rgba(0, 188, 212, 0.2);
+}
+
+/* Home Page Sections */
+.intro-section {
+    display: flex;
+    align-items: center;
+    gap: 40px;
+    margin: 40px 0;
+    padding: 20px;
+    border-left: 4px solid var(--color-secondary);
+}
+
+.intro-section img {
+    flex-shrink: 0; /* Prevents the image from shrinking */
+    max-width: 300px;
+    border: 3px solid var(--color-primary);
+    box-shadow: 0 0 15px var(--color-primary);
+    transition: transform 0.3s ease;
+}
+
+.intro-section img:hover {
+    transform: scale(1.02);
+}
+
+.intro-section p {
+    font-size: 1.1em;
+}
+
+.info-section {
+    padding: 20px;
+    background-color: var(--color-card-bg);
+    border-radius: 8px;
+    margin-top: 40px;
+}
+
+.info-section ul {
+    list-style: none; /* Remove default bullets */
+    padding-left: 0;
+}
+
+.info-section li {
+    background-color: rgba(0, 188, 212, 0.05); /* Very subtle background for list items */
+    padding: 10px;
+    margin-bottom: 8px;
+    border-left: 3px solid var(--color-primary);
+    transition: background-color 0.2s ease;
+}
+
+.info-section li:hover {
+    background-color: rgba(0, 188, 212, 0.15);
+}
+
+.social-links {
+    margin-top: 15px;
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    font-size: 1.2em;
+    padding: 10px;
+    border-top: 1px dashed var(--color-text-dim);
+}
+
+/* Images & Media */
 img {
-    max-width: 100%; /* Ensures images never overflow their container */
-    height: auto; /* Maintains aspect ratio */
+    max-width: 100%;
+    height: auto;
     display: block;
     margin: 10px 0;
 }
@@ -56,13 +186,15 @@ img {
 /* === Responsive Video Embedding (EPISODE Page) === */
 .video-container {
     position: relative;
-    padding-bottom: 56.25%; /* 16:9 Aspect Ratio (9/16 = 0.5625) */
+    padding-bottom: 56.25%;
     height: 0;
     overflow: hidden;
-    margin-bottom: 20px;
+    margin-bottom: 30px;
+    border: 5px solid var(--color-primary);
+    box-shadow: 0 0 20px var(--color-primary);
 }
 
-.video-container iframe {
+.video-container iframe, .video-container video { /* Added video tag */
     position: absolute;
     top: 0;
     left: 0;
@@ -70,11 +202,134 @@ img {
     height: 100%;
 }
 
+/* === EPISODE Page Specific Styles (Blurred Background) === */
+.episode-page {
+    /* Set background to body, so main can be transparent */
+    background-image: url('MATS/ISD.webp');
+    background-size: cover;
+    background-attachment: fixed;
+    background-position: center center;
+    /* BLUR EFFECT */
+    -webkit-backdrop-filter: blur(5px);
+    backdrop-filter: blur(5px);
+    background-color: rgba(0, 0, 0, 0.8); /* Dark layer over blurred image */
+    /* Remove original body background to apply this specific one */
+    background-image: none;
+}
+.episode-page main {
+    background-color: transparent; /* Main content is now transparent over the blurred body */
+    box-shadow: none;
+}
+
+.competition-info {
+    background-color: var(--color-card-bg);
+    padding: 30px;
+    border: 1px solid var(--color-secondary);
+    border-radius: 8px;
+    text-align: center;
+    box-shadow: 0 0 15px rgba(255, 152, 0, 0.5); /* Orange glow */
+}
+
+.competition-info p:first-of-type {
+    color: var(--color-secondary);
+    font-size: 1.4em;
+    font-weight: bold;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+}
+
+.sign-up-link {
+    display: inline-block;
+    background-color: var(--color-primary);
+    color: var(--color-background);
+    padding: 12px 25px;
+    margin-top: 20px;
+    border-radius: 5px;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.sign-up-link:hover {
+    background-color: var(--color-secondary);
+    color: var(--color-background);
+    transform: translateY(-2px);
+}
+
+/* === MERCH Page Styles (Product Card) === */
+.merch-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;
+    margin-top: 30px;
+}
+
+.product-card {
+    background-color: var(--color-card-bg);
+    border: 1px solid var(--color-text-dim);
+    border-radius: 8px;
+    padding: 20px;
+    text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.product-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 188, 212, 0.2);
+}
+
+.product-card img {
+    border-radius: 4px;
+    border: 1px solid var(--color-primary);
+    max-height: 200px; /* Limit image height in the card */
+    width: auto;
+    margin: 0 auto 15px auto;
+}
+
+.product-card h3 {
+    color: var(--color-secondary);
+    font-size: 1.5em;
+    margin-bottom: 10px;
+}
+
+.order-button {
+    background-color: var(--color-secondary);
+    color: var(--color-background);
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-weight: bold;
+    text-transform: uppercase;
+    display: block; /* Make it full width of the card */
+    margin-top: 15px;
+}
+
+.order-button:hover {
+    background-color: var(--color-primary);
+}
+
 /* === Mobile-First Media Query for smaller screens === */
+@media (max-width: 800px) {
+    .intro-section {
+        flex-direction: column; /* Stack image and text vertically */
+        text-align: center;
+    }
+    .intro-section img {
+        max-width: 80%;
+    }
+}
 @media (max-width: 600px) {
+    nav {
+        flex-direction: column;
+    }
     nav a {
         display: block; /* Stack links vertically on small screens */
         border-bottom: 1px solid #333;
+        padding: 10px;
+    }
+
+    h1 {
+        font-size: 1.8em;
     }
 
     main {

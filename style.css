@@ -6,13 +6,14 @@
 }
 
 :root {
-    /* Define a color palette for easier changes */
-    --color-primary: #00bcd4; /* Cyan/Jedi Blue for highlights */
-    --color-secondary: #ff9800; /* Orange/Gold for accents */
+    /* Sith/Sci-Fi Red Color Palette */
+    --color-primary: #ff3333; /* Dark Red/Sith for highlights and main actions */
+    --color-secondary: #f0c000; /* Yellow/Gold for accents */
     --color-background: #0a0a0a; /* Deep, dark background */
     --color-text-light: #e0e0e0; /* Light text for contrast */
     --color-text-dim: #9e9e9e; /* Dim text for secondary info */
-    --color-card-bg: rgba(25, 25, 25, 0.9); /* Dark, slightly transparent card background */
+    --color-card-bg: rgba(25, 0, 0, 0.7); /* Dark red-tinged, transparent card background */
+    --color-glass-border: rgba(255, 51, 51, 0.4); /* Red border for glass */
 }
 
 body {
@@ -46,7 +47,8 @@ main {
     padding: 30px 20px;
     background-color: rgba(0, 0, 0, 0.85); /* Darker, less transparent overlay */
     min-height: 100vh;
-    box-shadow: 0 0 50px rgba(0, 188, 212, 0.1); /* Subtle 'glow' */
+    /* Sith Red Glow */
+    box-shadow: 0 0 50px rgba(255, 51, 51, 0.15); 
 }
 
 /* Headings */
@@ -55,6 +57,8 @@ h1, h2, h3 {
     letter-spacing: 2px;
     margin-bottom: 20px;
     color: var(--color-primary);
+    /* Subtle text glow */
+    text-shadow: 0 0 5px rgba(255, 51, 51, 0.5); 
 }
 
 h1 {
@@ -76,7 +80,7 @@ h2 {
 header {
     background-color: rgba(10, 10, 10, 0.95);
     border-bottom: 2px solid var(--color-primary);
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 4px 15px rgba(255, 51, 51, 0.3); /* Red-tinted shadow */
     position: sticky; /* Keep nav at the top */
     top: 0;
     z-index: 1000;
@@ -101,7 +105,7 @@ nav a {
 
 nav a:hover, nav a:focus {
     color: var(--color-primary);
-    background-color: rgba(0, 188, 212, 0.1);
+    background-color: rgba(255, 51, 51, 0.15);
     border-bottom: 3px solid var(--color-primary);
 }
 
@@ -112,7 +116,7 @@ footer {
     text-align: center;
     padding: 15px;
     font-size: 0.9em;
-    border-top: 1px solid rgba(0, 188, 212, 0.2);
+    border-top: 1px solid rgba(255, 51, 51, 0.3); /* Red border */
 }
 
 /* Home Page Sections */
@@ -141,11 +145,18 @@ footer {
     font-size: 1.1em;
 }
 
+/* Replaced .info-section with the glass panel style for modernization */
 .info-section {
     padding: 20px;
-    background-color: var(--color-card-bg);
+    background-color: var(--color-card-bg); /* Use dark red glass base */
     border-radius: 8px;
     margin-top: 40px;
+    
+    /* GLASS EFFECT */
+    backdrop-filter: blur(8px) saturate(150%);
+    -webkit-backdrop-filter: blur(8px) saturate(150%);
+    border: 1px solid var(--color-glass-border);
+    box-shadow: 0 0 20px rgba(255, 51, 51, 0.1);
 }
 
 .info-section ul {
@@ -154,7 +165,7 @@ footer {
 }
 
 .info-section li {
-    background-color: rgba(0, 188, 212, 0.05); /* Very subtle background for list items */
+    background-color: rgba(255, 51, 51, 0.05); /* Very subtle red background for list items */
     padding: 10px;
     margin-bottom: 8px;
     border-left: 3px solid var(--color-primary);
@@ -162,7 +173,7 @@ footer {
 }
 
 .info-section li:hover {
-    background-color: rgba(0, 188, 212, 0.15);
+    background-color: rgba(255, 51, 51, 0.15);
 }
 
 .social-links {
@@ -191,7 +202,7 @@ img {
     overflow: hidden;
     margin-bottom: 30px;
     border: 5px solid var(--color-primary);
-    box-shadow: 0 0 20px var(--color-primary);
+    box-shadow: 0 0 30px var(--color-primary); /* Enhanced red glow */
 }
 
 .video-container iframe, .video-container video { /* Added video tag */
@@ -202,59 +213,80 @@ img {
     height: 100%;
 }
 
-/* === EPISODE Page Specific Styles (Blurred Background) === */
+/* === EPISODE Page Specific Styles (Blurred Background & Glass Panels) === */
 .episode-page {
-    /* Set background to body, so main can be transparent */
+    /* Main body background: Use the same image but force blur and darkening */
     background-image: url('MATS/ISD.webp');
     background-size: cover;
     background-attachment: fixed;
     background-position: center center;
-    /* BLUR EFFECT */
-    -webkit-backdrop-filter: blur(5px);
-    backdrop-filter: blur(5px);
-    background-color: rgba(0, 0, 0, 0.8); /* Dark layer over blurred image */
-    /* Remove original body background to apply this specific one */
-    background-image: none;
+    /* BLUR & DARKNESS applied directly to the image */
+    filter: blur(5px) brightness(0.6); 
+    /* The body element's background is now the blurred image. 
+       We must override the other body background settings to ensure this works correctly. */
+    background-color: var(--color-background); /* Ensures a dark base */
 }
+
+/* To correctly display content over the blurred body, we use a pseudo-element on the body */
+.episode-page::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1; /* Pushes the original image and blur behind content */
+    background-color: rgba(0, 0, 0, 0.5); /* A dark overlay for contrast */
+}
+
 .episode-page main {
     background-color: transparent; /* Main content is now transparent over the blurred body */
     box-shadow: none;
 }
 
+/* Applied Glass Style to Competition Info */
 .competition-info {
-    background-color: var(--color-card-bg);
+    background-color: var(--color-card-bg); 
     padding: 30px;
-    border: 1px solid var(--color-secondary);
-    border-radius: 8px;
+    border: 1px solid var(--color-glass-border);
+    border-radius: 15px; /* Softer edges for glass */
     text-align: center;
-    box-shadow: 0 0 15px rgba(255, 152, 0, 0.5); /* Orange glow */
+    /* GLASS EFFECT */
+    backdrop-filter: blur(10px) saturate(150%);
+    -webkit-backdrop-filter: blur(10px) saturate(150%);
+    box-shadow: 0 0 25px rgba(255, 51, 51, 0.2); /* Red glow */
+    margin-top: 40px;
 }
 
 .competition-info p:first-of-type {
-    color: var(--color-secondary);
+    color: var(--color-primary); /* Emphasize with primary red */
     font-size: 1.4em;
     font-weight: bold;
     text-transform: uppercase;
     margin-bottom: 10px;
+    text-shadow: 0 0 5px rgba(255, 51, 51, 0.8);
 }
 
 .sign-up-link {
     display: inline-block;
     background-color: var(--color-primary);
     color: var(--color-background);
-    padding: 12px 25px;
-    margin-top: 20px;
+    padding: 15px 35px; /* Larger button */
+    margin-top: 25px;
     border-radius: 5px;
     font-weight: bold;
     text-transform: uppercase;
-    letter-spacing: 1px;
-    transition: background-color 0.3s ease, transform 0.2s ease;
+    letter-spacing: 2px;
+    border: 2px solid var(--color-primary);
+    transition: all 0.3s ease;
+    font-size: 1.1em;
 }
 
 .sign-up-link:hover {
-    background-color: var(--color-secondary);
-    color: var(--color-background);
-    transform: translateY(-2px);
+    background-color: var(--color-background); /* Invert colors on hover */
+    color: var(--color-primary);
+    transform: translateY(-3px);
+    box-shadow: 0 0 20px var(--color-primary);
 }
 
 /* === MERCH Page Styles (Product Card) === */
@@ -267,16 +299,19 @@ img {
 
 .product-card {
     background-color: var(--color-card-bg);
-    border: 1px solid var(--color-text-dim);
+    border: 1px solid var(--color-glass-border);
     border-radius: 8px;
     padding: 20px;
     text-align: center;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
+    /* GLASS EFFECT */
+    backdrop-filter: blur(5px) saturate(120%);
+    -webkit-backdrop-filter: blur(5px) saturate(120%);
 }
 
 .product-card:hover {
     transform: translateY(-5px);
-    box-shadow: 0 10px 20px rgba(0, 188, 212, 0.2);
+    box-shadow: 0 10px 20px rgba(255, 51, 51, 0.3); /* Red glow on hover */
 }
 
 .product-card img {
@@ -294,7 +329,7 @@ img {
 }
 
 .order-button {
-    background-color: var(--color-secondary);
+    background-color: var(--color-primary);
     color: var(--color-background);
     padding: 10px 20px;
     border-radius: 5px;
@@ -302,10 +337,13 @@ img {
     text-transform: uppercase;
     display: block; /* Make it full width of the card */
     margin-top: 15px;
+    border: 2px solid var(--color-primary);
 }
 
 .order-button:hover {
-    background-color: var(--color-primary);
+    background-color: var(--color-background);
+    color: var(--color-primary);
+    box-shadow: 0 0 15px var(--color-primary);
 }
 
 /* === Mobile-First Media Query for smaller screens === */

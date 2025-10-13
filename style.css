@@ -1,6 +1,6 @@
 /* Universal Styles */
 * {
-    box-sizing: border-box; /* Makes padding and border included in the element's total width and height */
+    box-sizing: border-box; 
     margin: 0;
     padding: 0;
 }
@@ -17,12 +17,13 @@
 }
 
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Modern, clear font */
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
     color: var(--color-text-light);
     line-height: 1.7;
     background-color: var(--color-background);
 
     /* === LARGE WALLPAPER BACKGROUND for index.html (Star Destroyer) === */
+    /* This applies to all pages unless overridden by .episode-page */
     background-image: url('MATS/ISD.webp');
     background-size: cover;
     background-attachment: fixed;
@@ -42,13 +43,14 @@ a:hover {
 
 /* Main Content Wrapper */
 main {
-    max-width: 1200px; /* Wider main container */
+    max-width: 1200px; 
     margin: 0 auto;
     padding: 30px 20px;
-    background-color: rgba(0, 0, 0, 0.85); /* Darker, less transparent overlay */
+    background-color: rgba(0, 0, 0, 0.85); 
     min-height: 100vh;
-    /* Sith Red Glow */
     box-shadow: 0 0 50px rgba(255, 51, 51, 0.15); 
+    position: relative; /* Ensures main is above the body's background */
+    z-index: 2; /* Content layer */
 }
 
 /* Headings */
@@ -57,7 +59,6 @@ h1, h2, h3 {
     letter-spacing: 2px;
     margin-bottom: 20px;
     color: var(--color-primary);
-    /* Subtle text glow */
     text-shadow: 0 0 5px rgba(255, 51, 51, 0.5); 
 }
 
@@ -80,8 +81,8 @@ h2 {
 header {
     background-color: rgba(10, 10, 10, 0.95);
     border-bottom: 2px solid var(--color-primary);
-    box-shadow: 0 4px 15px rgba(255, 51, 51, 0.3); /* Red-tinted shadow */
-    position: sticky; /* Keep nav at the top */
+    box-shadow: 0 4px 15px rgba(255, 51, 51, 0.3);
+    position: sticky; 
     top: 0;
     z-index: 1000;
 }
@@ -116,7 +117,7 @@ footer {
     text-align: center;
     padding: 15px;
     font-size: 0.9em;
-    border-top: 1px solid rgba(255, 51, 51, 0.3); /* Red border */
+    border-top: 1px solid rgba(255, 51, 51, 0.3);
 }
 
 /* Home Page Sections */
@@ -130,7 +131,7 @@ footer {
 }
 
 .intro-section img {
-    flex-shrink: 0; /* Prevents the image from shrinking */
+    flex-shrink: 0; 
     max-width: 300px;
     border: 3px solid var(--color-primary);
     box-shadow: 0 0 15px var(--color-primary);
@@ -145,10 +146,10 @@ footer {
     font-size: 1.1em;
 }
 
-/* Replaced .info-section with the glass panel style for modernization */
-.info-section {
+/* Glass Panel Style */
+.info-section, .product-card {
     padding: 20px;
-    background-color: var(--color-card-bg); /* Use dark red glass base */
+    background-color: var(--color-card-bg); 
     border-radius: 8px;
     margin-top: 40px;
     
@@ -160,12 +161,12 @@ footer {
 }
 
 .info-section ul {
-    list-style: none; /* Remove default bullets */
+    list-style: none; 
     padding-left: 0;
 }
 
 .info-section li {
-    background-color: rgba(255, 51, 51, 0.05); /* Very subtle red background for list items */
+    background-color: rgba(255, 51, 51, 0.05); 
     padding: 10px;
     margin-bottom: 8px;
     border-left: 3px solid var(--color-primary);
@@ -202,10 +203,10 @@ img {
     overflow: hidden;
     margin-bottom: 30px;
     border: 5px solid var(--color-primary);
-    box-shadow: 0 0 30px var(--color-primary); /* Enhanced red glow */
+    box-shadow: 0 0 30px var(--color-primary); 
 }
 
-.video-container iframe, .video-container video { /* Added video tag */
+.video-container iframe, .video-container video { 
     position: absolute;
     top: 0;
     left: 0;
@@ -213,53 +214,67 @@ img {
     height: 100%;
 }
 
-/* === EPISODE Page Specific Styles (Blurred Background & Glass Panels) === */
-.episode-page {
-    /* Main body background: Use the same image but force blur and darkening */
-    background-image: url('MATS/ISD.webp');
-    background-size: cover;
-    background-attachment: fixed;
-    background-position: center center;
-    /* BLUR & DARKNESS applied directly to the image */
-    filter: blur(5px) brightness(0.6); 
-    /* The body element's background is now the blurred image. 
-       We must override the other body background settings to ensure this works correctly. */
-    background-color: var(--color-background); /* Ensures a dark base */
+/* === FIX: EPISODE Page Specific Styles (Blurred Background & Glass Panels) === */
+
+/* 1. Reset the default body background settings */
+body.episode-page {
+    background-image: none; /* Crucial: stops the image from showing twice */
+    background-color: var(--color-background);
+    /* Remove the faulty blur filters that were blurring the whole screen */
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+    filter: none;
 }
 
-/* To correctly display content over the blurred body, we use a pseudo-element on the body */
-.episode-page::before {
+/* 2. Create the Blurred Background Layer using a Pseudo-Element (The fix) */
+body.episode-page::before {
     content: "";
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    z-index: -1; /* Pushes the original image and blur behind content */
-    background-color: rgba(0, 0, 0, 0.5); /* A dark overlay for contrast */
+    z-index: 1; /* Place it behind the header/main content (z-index 1000/2) */
+    
+    /* Apply the image and its effects only here */
+    background-image: url('MATS/ISD.webp');
+    background-size: cover;
+    background-attachment: fixed;
+    background-position: center center;
+    
+    /* Apply Blur and Darkness here, where it won't affect z-indexed content */
+    filter: blur(5px) brightness(0.6); 
+    transform: scale(1.02); /* Prevents blur edge artifacts */
 }
 
+/* 3. Ensure main content is transparent over the blurred layer */
 .episode-page main {
-    background-color: transparent; /* Main content is now transparent over the blurred body */
+    background-color: transparent; 
     box-shadow: none;
 }
+header, footer {
+    /* Need to raise header/footer above the z-index 1 background layer */
+    position: relative; 
+    z-index: 3;
+}
+
 
 /* Applied Glass Style to Competition Info */
 .competition-info {
     background-color: var(--color-card-bg); 
     padding: 30px;
     border: 1px solid var(--color-glass-border);
-    border-radius: 15px; /* Softer edges for glass */
+    border-radius: 15px; 
     text-align: center;
-    /* GLASS EFFECT */
+    
     backdrop-filter: blur(10px) saturate(150%);
     -webkit-backdrop-filter: blur(10px) saturate(150%);
-    box-shadow: 0 0 25px rgba(255, 51, 51, 0.2); /* Red glow */
+    box-shadow: 0 0 25px rgba(255, 51, 51, 0.2); 
     margin-top: 40px;
 }
 
 .competition-info p:first-of-type {
-    color: var(--color-primary); /* Emphasize with primary red */
+    color: var(--color-primary); 
     font-size: 1.4em;
     font-weight: bold;
     text-transform: uppercase;
@@ -271,7 +286,7 @@ img {
     display: inline-block;
     background-color: var(--color-primary);
     color: var(--color-background);
-    padding: 15px 35px; /* Larger button */
+    padding: 15px 35px; 
     margin-top: 25px;
     border-radius: 5px;
     font-weight: bold;
@@ -283,7 +298,7 @@ img {
 }
 
 .sign-up-link:hover {
-    background-color: var(--color-background); /* Invert colors on hover */
+    background-color: var(--color-background); 
     color: var(--color-primary);
     transform: translateY(-3px);
     box-shadow: 0 0 20px var(--color-primary);
@@ -311,13 +326,13 @@ img {
 
 .product-card:hover {
     transform: translateY(-5px);
-    box-shadow: 0 10px 20px rgba(255, 51, 51, 0.3); /* Red glow on hover */
+    box-shadow: 0 10px 20px rgba(255, 51, 51, 0.3);
 }
 
 .product-card img {
     border-radius: 4px;
     border: 1px solid var(--color-primary);
-    max-height: 200px; /* Limit image height in the card */
+    max-height: 200px; 
     width: auto;
     margin: 0 auto 15px auto;
 }
@@ -335,7 +350,7 @@ img {
     border-radius: 5px;
     font-weight: bold;
     text-transform: uppercase;
-    display: block; /* Make it full width of the card */
+    display: block; 
     margin-top: 15px;
     border: 2px solid var(--color-primary);
 }
@@ -349,7 +364,7 @@ img {
 /* === Mobile-First Media Query for smaller screens === */
 @media (max-width: 800px) {
     .intro-section {
-        flex-direction: column; /* Stack image and text vertically */
+        flex-direction: column; 
         text-align: center;
     }
     .intro-section img {
@@ -361,7 +376,7 @@ img {
         flex-direction: column;
     }
     nav a {
-        display: block; /* Stack links vertically on small screens */
+        display: block; 
         border-bottom: 1px solid #333;
         padding: 10px;
     }

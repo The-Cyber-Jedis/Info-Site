@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Student Org | Home</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="styles.css">
+  <script src=".path"></script>
+  <script>
+    if (window.siteConfig?.pageTitles?.home) document.title = window.siteConfig.pageTitles.home;
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+</head>
+<body>
+  <header>
+    <h1 id="site-title">UTSA Cyber Jedis</h1>
+    <nav>
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="CONNECT/connect.html">Connect</a></li>
+        <li><a href="MERCH/merch.html">Merch</a></li>
+        <li class="dropdown">
+          <a href="#">Teams</a>
+          <ul class="dropdown-content">
+            <li><a href="TEAMS/EPISODE/episode.html">EPISODE</a></li>
+            <li><a href="TEAMS/ORDER404/order404.html">ORDER404</a></li>
+            <li><a href="TEAMS/RESEARCH/research.html">RESEARCH</a></li>
+          </ul>
+        </li>
+      </ul>
+    </nav>
+  </header>
+  <main>
+    <section id="calendar-container">
+      <h2>Organization Calendar</h2>
+      <div id="calendar"></div>
+    </section>
+
+    <div id="calendar-modal" class="hidden">
+      <div id="modal-content">
+        <button onclick="document.getElementById('calendar-modal').classList.add('hidden')">Close [x]</button>
+        <h3 id="event-title"></h3>
+        <div id="event-content"></div>
+        <div class="calendar-export">
+          <h4>Add to Calendar</h4>
+          <div class="calendar-buttons">
+            <button class="btn-chrome" onclick="addToGoogleCalendar()">📅 Google</button>
+            <button class="btn-chrome" onclick="addToAppleCalendar()">🍎 Apple</button>
+            <button class="btn-chrome" onclick="addToOutlook()">📧 Outlook</button>
+            <button class="btn-chrome" onclick="addToYahoo()">📮 Yahoo</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <section id="media-carousel">
+      <h2>Featured Media</h2>
+      <div style="max-width:700px; margin:0 auto; text-align:center;">
+        <!-- Carousel Image -->
+        <div style="position:relative; background:#1a1a1a; border-radius:8px; overflow:hidden; height:400px; display:flex; align-items:center; justify-content:center;">
+          <img id="carousel-img" src="" alt="Featured Image" style="max-width:100%; max-height:100%; object-fit:contain;">
+          <div id="carousel-message" style="position:absolute; color:#c0c0c0; font-size:1.2rem;">Loading...</div>
+        </div>
+        
+        <!-- Navigation Buttons -->
+        <div style="margin-top:15px; display:flex; gap:10px; justify-content:center; align-items:center;">
+          <button class="btn-chrome" onclick="prevImage()">← Prev</button>
+          <span id="carousel-counter" style="color:#666; font-size:0.9rem;">-/-</span>
+          <button class="btn-chrome" onclick="nextImage()">Next →</button>
+        </div>
+      </div>
+    </section>
+
+    <section id="welcome-text" class="chrome-box">
+      <h2>About Our Mission</h2>
+      <p id="mission-statement">
+        ReplaceMeReplaceMeReplaceMeReplaceMeReplaceMeReplaceMeReplaceMeReplaceMeReplaceMe
+        ReplaceMeReplaceMeReplaceMeReplaceMeReplaceMeReplaceMeReplaceMeReplaceMeReplaceMe
+        ReplaceMeReplaceMeReplaceMeReplaceMeReplaceMeReplaceMeReplaceMeReplaceMeReplaceMe
+      </p>
+    </section>
+  </main>
+  <footer>
+    <p id="copyright">&copy; 2026 The UTSA Cyber Jedis</p>
+  </footer>
+  <script src="bg-effect.js"></script>
+  <script src="site-data.js?v=2"></script>
+  <script>
+    // ========================================
+    // SIMPLE CAROUSEL - Easy to understand and modify!
+    // ========================================
+    // To add images: Just add filenames to the 'carousel' array in site-data.js
+    // Example: "MEDIA/img/carousel/myimage.jpg"
+    
+    const images = siteData.carousel || [];
+    let currentIndex = 0;
+    
+    const img = document.getElementById('carousel-img');
+    const message = document.getElementById('carousel-message');
+    const counter = document.getElementById('carousel-counter');
+    
+    // Show an image by index
+    function showImage(index) {
+      if (images.length === 0) {
+        message.textContent = 'Add images to MEDIA/img/carousel/ folder and list them in site-data.js';
+        counter.textContent = '0/0';
+        return;
+      }
+      
+      currentIndex = index;
+      if (currentIndex < 0) currentIndex = images.length - 1;
+      if (currentIndex >= images.length) currentIndex = 0;
+      
+      img.src = images[currentIndex];
+      message.style.display = 'none';
+      counter.textContent = `${currentIndex + 1}/${images.length}`;
+    }
+    
+    // Navigation functions
+    function nextImage() {
+      showImage(currentIndex + 1);
+    }
+    
+    function prevImage() {
+      showImage(currentIndex - 1);
+    }
+    
+    // Auto-advance every 5 seconds
+    function autoAdvance() {
+      nextImage();
+      setTimeout(autoAdvance, 5000);
+    }
+    
+    // Start the carousel
+    if (images.length > 0) {
+      showImage(0);
+      setTimeout(autoAdvance, 5000);
+    } else {
+      showImage(0);
+    }
+    
+    // Expose functions globally for onclick
+    window.nextImage = nextImage;
+    window.prevImage = prevImage;
+
+    (function(){
+      const today = new Date();
+      const month = today.getMonth();
+      const year = today.getFullYear();
+      const calendar = document.getElementById('calendar');
+
+      // Simple month calendar with event indicators
+      function renderCalendar() {
+        const firstDay = new Date(year, month, 1).getDay();
+        const daysInMonth = new Date(year, month+1, 0).getDate();
+        const tbl = document.createElement('table');
+        const headerRow = document.createElement('tr');
+        ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'].forEach(d=>{
+          const th=document.createElement('th'); th.textContent=d; headerRow.appendChild(th);
+        });
+        tbl.appendChild(headerRow);
+        
+        let row = document.createElement('tr');
+        for(let i=0;i<firstDay;i++) row.appendChild(document.createElement('td'));
+        
+        for(let d=1; d<=daysInMonth; d++){
+          if((firstDay + d -1)%7===0 && d>1){
+            tbl.appendChild(row);
+            row=document.createElement('tr');
+          }
+          const cell=document.createElement('td');
+          cell.textContent = d;
+          
+          // Check if date has event
+          const dateStr = `${(month+1).toString().padStart(2,'0')}-${d.toString().padStart(2,'0')}`;
+          const eventFile = siteData.calendar.find(f => f.includes(dateStr));
+          if(eventFile) {
+            cell.classList.add('event-day');
+            cell.title = "View Event";
+            cell.onclick = () => showEvent(eventFile, dateStr);
+          }
+          if(d===today.getDate() && month === today.getMonth()) cell.classList.add('today');
+          row.appendChild(cell);
+        }
+        tbl.appendChild(row);
+        calendar.innerHTML = '';
+        calendar.appendChild(tbl);
+      }
+
+      // Store event data globally so onclick handlers can access it
+      window.currentEventData = null;
+
+      async function showEvent(file, date) {
+        const res = await fetch(file);
+        const text = await res.text();
+        document.getElementById('event-title').textContent = "Events for " + date;
+        document.getElementById('event-content').innerHTML = marked.parse(text);
+        
+        // Parse event data for calendar export
+        window.currentEventData = parseEventData(text, date);
+        
+        document.getElementById('calendar-modal').classList.remove('hidden');
+      }
+
+      function parseEventData(markdown, dateStr) {
+        const lines = markdown.split('\n').map(l => l.trim());
+        const eventName = lines.find(l => l.startsWith('#'))?.replace(/^#+\s*/, '') || `${window.siteConfig?.siteName || 'UTSA Cyber Jedis'} Event`;
+        
+        // Extract time (look for time patterns like "6:00 PM")
+        const timeLine = lines.find(l => /\d{1,2}:\d{2}\s*(AM|PM)/i.test(l));
+        const timeMatch = timeLine?.match(/(\d{1,2}:\d{2}\s*(AM|PM))/i);
+        const time = timeMatch ? timeMatch[0] : '6:00 PM';
+        
+        // Extract location
+        const locationLine = lines.find(l => /NPB|room|building|location/i.test(l) && !l.startsWith('#'));
+        const location = locationLine?.replace(/^-\s*/, '') || 'TBD';
+        
+        // Create date object
+        const [monthStr, dayStr] = dateStr.split('-');
+        const eventDate = new Date(year, parseInt(monthStr) - 1, parseInt(dayStr));
+        
+        // Parse time and set on date
+        const [timeStr, period] = time.split(/\s+/);
+        let [hours, minutes] = timeStr.split(':').map(Number);
+        if (period.toUpperCase() === 'PM' && hours !== 12) hours += 12;
+        if (period.toUpperCase() === 'AM' && hours === 12) hours = 0;
+        eventDate.setHours(hours, minutes, 0, 0);
+        
+        // Default 1 hour duration
+        const endDate = new Date(eventDate.getTime() + 60 * 60 * 1000);
+        
+        return {
+          title: eventName,
+          startDate: eventDate,
+          endDate: endDate,
+          location: location,
+          description: `${window.siteConfig?.siteName || 'UTSA Cyber Jedis'} Event - ${eventName}`
+        };
+      }
+
+      function formatDateForCalendar(date) {
+        // Format: YYYYMMDDTHHmmssZ
+        const pad = (n) => n.toString().padStart(2, '0');
+        return date.getUTCFullYear() +
+               pad(date.getUTCMonth() + 1) +
+               pad(date.getUTCDate()) + 'T' +
+               pad(date.getUTCHours()) +
+               pad(date.getUTCMinutes()) +
+               pad(date.getUTCSeconds()) + 'Z';
+      }
+
+      function addToGoogleCalendar() {
+        if (!window.currentEventData) return;
+        const { title, startDate, endDate, location, description } = window.currentEventData;
+        const start = formatDateForCalendar(startDate);
+        const end = formatDateForCalendar(endDate);
+        const url = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(title)}&dates=${start}/${end}&details=${encodeURIComponent(description)}&location=${encodeURIComponent(location)}`;
+        window.open(url, '_blank');
+      }
+
+      function addToAppleCalendar() {
+        if (!window.currentEventData) return;
+        const { title, startDate, endDate, location, description } = window.currentEventData;
+        const icsContent = [
+          'BEGIN:VCALENDAR',
+          'VERSION:2.0',
+          'BEGIN:VEVENT',
+          `DTSTART:${formatDateForCalendar(startDate)}`,
+          `DTEND:${formatDateForCalendar(endDate)}`,
+          `SUMMARY:${title}`,
+          `DESCRIPTION:${description}`,
+          `LOCATION:${location}`,
+          'END:VEVENT',
+          'END:VCALENDAR'
+        ].join('\r\n');
+        
+        const blob = new Blob([icsContent], { type: 'text/calendar' });
+        const link = document.createElement('a');
+        link.href = URL.createObjectURL(blob);
+        link.download = 'event.ics';
+        link.click();
+      }
+
+      function addToOutlook() {
+        if (!window.currentEventData) return;
+        const { title, startDate, endDate, location, description } = window.currentEventData;
+        const start = formatDateForCalendar(startDate);
+        const end = formatDateForCalendar(endDate);
+        const url = `https://outlook.live.com/calendar/0/deeplink/compose?subject=${encodeURIComponent(title)}&startdt=${start}&enddt=${end}&location=${encodeURIComponent(location)}&body=${encodeURIComponent(description)}`;
+        window.open(url, '_blank');
+      }
+
+      function addToYahoo() {
+        if (!window.currentEventData) return;
+        const { title, startDate, endDate, location, description } = window.currentEventData;
+        const start = formatDateForCalendar(startDate);
+        const end = formatDateForCalendar(endDate);
+        const url = `https://calendar.yahoo.com/?v=60&view=d&type=20&title=${encodeURIComponent(title)}&st=${start}&et=${end}&desc=${encodeURIComponent(description)}&in_loc=${encodeURIComponent(location)}`;
+        window.open(url, '_blank');
+      }
+
+      // Expose functions to global scope for onclick handlers
+      window.addToGoogleCalendar = addToGoogleCalendar;
+      window.addToAppleCalendar = addToAppleCalendar;
+      window.addToOutlook = addToOutlook;
+      window.addToYahoo = addToYahoo;
+
+      renderCalendar();
+    })();
+  </script>
+  <script>
+    // Update dynamic content from config
+    if (window.siteConfig) {
+      const titleEl = document.getElementById('site-title');
+      const welcomeEl = document.getElementById('welcome-message');
+      const copyrightEl = document.getElementById('copyright');
+      const meetingDayEl = document.getElementById('meeting-day');
+      
+      if (titleEl) titleEl.textContent = window.siteConfig.siteName;
+      if (welcomeEl) welcomeEl.textContent = `Welcome to ${window.siteConfig.siteName}`;
+      if (copyrightEl) copyrightEl.innerHTML = `&copy; ${window.siteConfig.copyrightYear} ${window.siteConfig.copyrightOwner}`;
+      if (meetingDayEl && window.siteConfig.contact?.meetingDay) meetingDayEl.textContent = window.siteConfig.contact.meetingDay;
+    }
+  </script>
+</body>
+</html>
